@@ -7,26 +7,6 @@
 
 @section('content')
 
-<style>
-    .modal-backdrop{
-        display: none;
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-        background: rgba(0,0,0,0.5);
-        z-index: 100000;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-    }
-
-    .modal{
-        margin: 0 auto;
-        width: 40%;
-        margin-top: 5%;
-    }
-</style>
-
 <div class="modal-backdrop">
     <div class="modal">
         <div class="gradient-1 py-12 px-8">
@@ -81,11 +61,13 @@
             .dropdown-items{
                 position:absolute;
                 background:white;
-                min-width: 7%;
+                max-width:  250px;
+
                 
             }
             .btn-dropdown{
                 z-index:1;
+                max-width: 250px;
             }
         </style> 
         <div class="md:w-2/3">
@@ -103,7 +85,7 @@
                 <div class="flex justify-between items-center mb-3">
                     <p class="mb-3">{{ $quote->quote_text }}</p>
                     <div class="btn-dropdown">
-                        <a href="javascript:void(0)" onclick = "toggle_dropdown('dropdown-{{ $quote->id }}')" class="bg-green-500 text-white p-1 rounded-md px-3 py-2">Button &nbsp;<span class="fas fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)" onclick = "toggle_dropdown('dropdown-{{ $quote->id }}')" class="bg-green-500 text-white p-1 rounded-md px-3 py-2">Actions &nbsp;<span class="fas fa-chevron-down"></span></a>
                         <div class="dropdown-items mt-2" id="dropdown-{{ $quote->id }}">
                             <a href="{{ route('get_update', ['id' => $quote->id] ) }}" class="hover:bg-green-700 p-1 px-3 hover:text-white">Edit</a>
                             <a href="javascript:void(0)" class="hover:bg-green-700 p-1 px-3 hover:text-white" onclick = "confirmDelete('{{ $quote->id }}', 'container-{{ $quote->id }}')">Delete</a>

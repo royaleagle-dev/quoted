@@ -2,3 +2,21 @@
     background-color: rgb(21 128 61 / var(--tw-bg-opacity));
     background: linear-gradient(90deg, rgba(21, 128, 61), rgb(34 197 94))
 }
+
+.modal-backdrop{
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: rgba(0,0,0,0.5);
+    z-index: 100000;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.modal{
+    margin: 0 auto;
+    width: 40%;
+    margin-top: 5%;
+}

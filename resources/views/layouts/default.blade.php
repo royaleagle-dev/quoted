@@ -23,8 +23,8 @@
                 @auth
                 <a href="javascript:void(0)" onclick = "toggle_dropdown('dropdown-nav')" class="hover:bg-green-700 bg-green-500 text-white p-1 rounded-md px-3 py-2">@if( Auth::check() ) {{ Auth::user()->name }} @else Not Authenticated @endif  &nbsp;<span class="fas fa-chevron-down"></span></a>
                 <div class="dropdown-items mt-2 text-black" id="dropdown-nav">
-                    <a href="" class="hover:bg-green-700 p-1 px-3 hover:text-white">Preferences</a>
-                    <a href="{{ url('/logout') }}" class="hover:bg-green-700 p-1 px-3 hover:text-white">Logout</a>
+                    <a href="" class="hover:bg-green-700 p-1 px-10 hover:text-white">Preferences</a>
+                    <a href="{{ url('/logout') }}" class="hover:bg-green-700 p-1 px-10 hover:text-white">Logout</a>
                 </div>
                 @endauth
 
