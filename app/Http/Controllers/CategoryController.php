@@ -21,12 +21,22 @@ class CategoryController extends Controller
         }
     }
 
-    public function test_input(){
-       if(Auth::check()){
-        print "User is Logged In";
-       }else{
-        print "User is not Logged In";
-       }
+    //super admin access only
+    public function add(Request $req){        
+        $validate = $req->validate([
+            'category' => ['max:255', 'required'],
+            'description' => 'required',
+        ]);
+        if(CategoryModel::insert([
+            'name' => $req->input('category'),
+            'description' => $req->input('description'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ])){
+            return response()->json(['status' => 'success', 'message' => 'Category Added Successfully']);
+        }else{
+            return response()->json(['status' => 'error', 'message'=>'An Error Occured, Please Try Again']);
+        };
     }
 
 }

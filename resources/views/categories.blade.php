@@ -32,7 +32,11 @@
                     <div class="mb-6">
                     <div class="mb-6">
                         <label for="category" class="block mb-2 text-sm font-medium dark:text-white text-white">Category Name</label>
-                        <input id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Business" required>
+                        <input id="category-input" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Business" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="category" class="block mb-2 text-sm font-medium dark:text-white text-white">Category Description</label>
+                        <input id="description-input" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Descriptioin Here" required>
                     </div>  
                     </div>
 
@@ -87,7 +91,51 @@
         
         const proceed_add_category = () => {
             //proceed to add category here.
-            console.log("I am here Now Now Now");
+            categoryInput = document.querySelector("#category-input").value;
+            if(categoryInput != false){
+                const addCategory = fetch("{{ url('/categories/add') }}", {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                    },
+                    body: JSON.stringify({
+                        'category': categoryInput,
+                        'description': document.querySelector("#description-input").value,
+                        '_token': "{{ csrf_token() }}",
+                    }),
+                }).then(response => {
+                    return response.json();
+                }).then(json => {
+                    switch(json.status){
+                        case 'success':
+                            iziToast.show({
+                                title: 'Success',
+                                message: json.message,
+                            });
+                            break;
+                        case 'error':
+                            iziToast.show({
+                                title: 'Error',
+                                message: json.message,
+                                backgroundColor: 'red',
+                                titleColor: 'white',
+                                messageColor: 'white',
+                            });
+                            break;
+                    }
+                })
+            }else{
+                iziToast.show({
+                    title: 'Error',
+                    message: 'Category Field Must Not Be Empty',
+                    backgroundColor: 'red',
+                    titleColor: 'white',
+                    messageColor: 'white',
+                })
+            }
+
+            
+
         }
 
         //dom elements
