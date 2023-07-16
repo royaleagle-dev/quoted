@@ -1,0 +1,4 @@
+.gradient-1{
+    background-color: rgb(21 128 61 / var(--tw-bg-opacity));
+    background: linear-gradient(90deg, rgba(21, 128, 61), rgb(34 197 94))
+}
