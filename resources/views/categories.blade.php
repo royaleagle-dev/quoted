@@ -57,9 +57,13 @@
                     </div>
                 </form>
             </div>
+            
+            @auth
             <div class="mb-2 mt-2">
                 <a href="javascript:void(0)" onclick = "addCategory()">Add Category</a>
             </div>
+            @endauth
+
             @if(!$categories->isEmpty())
             @foreach($categories as $category)
             <div class="bg-gray-100 py-5 px-4 mb-4" id="container-{{ $category->id }}" style="transition: all 2s ease-out;">

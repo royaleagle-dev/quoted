@@ -19,10 +19,9 @@
                     <div class="mb-6">
                         <label for="Quote Category" class="block mb-2 text-sm font-medium dark:text-white text-black">Quote Category</label>
                         <select id="countries" name="quote_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="1">United States</option>
-                            <option value="2">Canada</option>
-                            <option value="3">France</option>
-                            <option value="4">Germany</option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}" @if( $quote->category_id == $category->id ) selected @endif>{{ $category->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <input type="hidden" value="{{ $quote->id }}" name="quote_id">

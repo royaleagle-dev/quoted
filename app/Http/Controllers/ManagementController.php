@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\QuoteModel;
+use App\Models\CategoryModel;
 
 class ManagementController extends Controller
 {
@@ -26,8 +27,8 @@ class ManagementController extends Controller
             return redirect('/quotes');
 
         }else if($req->method() == 'GET'){
-            //pass
-            return view('administrator.insert');
+            $categories = CategoryModel::all()->sortBy('name');
+            return view('administrator.insert', ['categories'=>$categories]);
         }
 
     }
@@ -53,7 +54,8 @@ class ManagementController extends Controller
         }else if($req->method() == 'GET'){
             $quote = QuoteModel::find($id);
             if(is_object($quote)){
-                return view ("administrator.update", ['quote'=>$quote]);
+                $categories = CategoryModel::all()->sortBy('name');
+                return view ("administrator.update", ['quote'=>$quote, 'categories'=>$categories]);
             }else{
                 return view ("administrator.no_record", ["id" => $id]);
             }
