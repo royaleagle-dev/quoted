@@ -21,6 +21,14 @@ class CategoryController extends Controller
         }
     }
 
+    public function show(Request $req, $id){
+        if($id){
+            $category = CategoryModel::find($id)->name;
+            $quotes = QuoteModel::where('category_id', $id)->get();
+            return view('category', ['quotes'=>$quotes, 'category' => $category]);
+        }
+    }
+
     //super admin access only
     public function add(Request $req){        
         $validate = $req->validate([
@@ -44,7 +52,7 @@ class CategoryController extends Controller
             'id' => ['required'],
         ]);
         $category = CategoryModel::find($req->input('id'));
-        print_r($category);
+        //print_r($category);
         if($category->delete()){
             return response()->json(['status'=>'success', 'message'=>'Successfully Deleted']);
         }else{

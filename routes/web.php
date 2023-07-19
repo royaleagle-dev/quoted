@@ -41,7 +41,8 @@ Route::post('/mg/add', [ManagementController::class, 'insert'])->middleware('aut
 Route::post('/mg/remove', [ManagementController::class, 'remove'])->middleware('auth');
 Route::get('/mg/update/{id}', [ManagementController::class, 'update'])->name('get_update')->middleware('auth');
 Route::post('/mg/update', [ManagementController::class, 'update'])->middleware('auth');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->middleware('auth')->name('category.show');
 
 //super registered users
 Route::post('/categories/add', [CategoryController::class, 'add'])->middleware('auth');
-Route::get('/category/delete', [CategoryController::class, 'delete'])->middleware('auth');
+Route::post('/category/delete', [CategoryController::class, 'delete'])->middleware('auth');

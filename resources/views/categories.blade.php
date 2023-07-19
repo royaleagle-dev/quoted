@@ -65,7 +65,7 @@
             @foreach($categories as $category)
             <div class="bg-gray-100 py-5 px-4 mb-4" id="container-{{ $category->id }}" style="transition: all 2s ease-out;">
                 <div class="flex justify-between items-center mb-1">
-                    <p class="">{{ $category->name }}</p>
+                    <p class=""><a href="{{ route('category.show', [$category->id]) }}">{{ $category->name }}</a></p>
                     <div class="">
                         <a style="cursor:not-allowed" href="javascript:void(0)" class="bg-green-900 text-white p-1 rounded-md px-3 py-2 text-sm">Added {{ $category->created_at }}</a>
                     </div>
@@ -84,9 +84,10 @@
 
 @section('javascript')
 <script>
-const check_user_level = () => {
-    check_user = fetch("{{ url('/checkUserLevel') }}")
-    .then(response => {
+let isSuperAdmin = false;
+
+(function check_user_level(){
+    const check_user = fetch("{{ url('/checkUserLevel') }}").then(response => {
         return response.json();
     }).then( json => {
         switch(json.status){
@@ -98,32 +99,27 @@ const check_user_level = () => {
                     titleColor: 'white',
                     messageColor: 'white',
                 });
-                return false;
                 break;
-                //end function lifespan.
             case 'success':
                 if(json.level < 2){
                     iziToast.show({
                         title: 'Error',
-                        message: "You do not have the permission to perform this action.",
+                        message: "You do not have the permission for certain actions on this page.",
                         backgroundColor: 'red',
                         titleColor: 'white',
                         messageColor: 'white',
                     });
-                    return false;
-                    break;
+                    break
                 }else{
-                    return true;
+                    isSuperAdmin = true;
                     break;
                 }
         }
     })
-}
+})();
 
 const deleteCategory = (recordId, elemId) => {
-    const check_user = check_user_level();
-    console.log(check_user);
-    if(check_user === true){
+    if(isSuperAdmin){
         const delete_category = fetch("{{ url('/category/delete') }}", {
             method: "POST",
             body: JSON.stringify({
@@ -141,6 +137,7 @@ const deleteCategory = (recordId, elemId) => {
                         title: 'Success',
                         message: json.message,
                     });
+                    document.getElementById(elemId).style.display="none";
                     break;
                 case 'error':
                     iziToast.show({
@@ -154,7 +151,13 @@ const deleteCategory = (recordId, elemId) => {
             }
         })
     }else{
-        return false;
+        iziToast.show({
+            title: 'Error',
+            message: 'You Cannot Perform This Action',
+            backgroundColor: 'orange',
+            titleColor: 'white',
+            messageColor: 'white',
+        })
     }
 }
     
@@ -167,7 +170,7 @@ const deleteCategory = (recordId, elemId) => {
             //proceed to add category here.
             categoryInput = document.querySelector("#category-input").value;            
             //check if user is a super admin
-            const check_user = check_user_level();
+            const check_user = isSuperAdmin
             if(check_user){
                 if(categoryInput != false){
                     const addCategory = fetch("{{ url('/categories/add') }}", {
@@ -189,6 +192,7 @@ const deleteCategory = (recordId, elemId) => {
                                     title: 'Success',
                                     message: json.message,
                                 });
+                                setTimeout(function(){window.location.reload()}, 3000)
                                 break;
                             case 'error':
                                 iziToast.show({
@@ -210,6 +214,14 @@ const deleteCategory = (recordId, elemId) => {
                         messageColor: 'white',
                     })
                 }
+            }else{
+                iziToast.show({
+                    title: 'Error',
+                    message: 'You Cannot Perform This Action',
+                    backgroundColor: 'orange',
+                    titleColor: 'white',
+                    messageColor: 'white',
+                })
             }
         }
 
