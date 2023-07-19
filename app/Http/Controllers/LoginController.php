@@ -12,6 +12,22 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function check_user_level(){
+        $current_user = Auth::user();
+        if(!$current_user){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User does not exist',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'level' => $current_user->user_level,
+        ]);
+
+    }
+
     public function logout(Request $req){
         Auth::logout();
         $req->session()->invalidate();

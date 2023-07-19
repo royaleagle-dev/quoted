@@ -39,4 +39,18 @@ class CategoryController extends Controller
         };
     }
 
+    public function delete(Request $req){
+        $validate = $req->validate([
+            'id' => ['required'],
+        ]);
+        $category = CategoryModel::find($req->input('id'));
+        print_r($category);
+        if($category->delete()){
+            return response()->json(['status'=>'success', 'message'=>'Successfully Deleted']);
+        }else{
+            return response()->json(['status'=>'error', 'message'=>'An Error occured, Category cannot be deleted']);
+        }
+    }
+    
+
 }

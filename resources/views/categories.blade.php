@@ -49,29 +49,27 @@
 <div class="mt-[5vh] md:mt-[5%]">
     <div class="md:flex md:justify-center md:items-center w-full" style="gap:20px;align-items:flex-start;">  
         <div class="w-full md:w-[40vw]">
-            <div class="search">
+            <div class=" mt-3 mb-3 search flex justify-between items-center">
                 <form>
-                    <div class="mb-6">
-                        <label for="search" class="block mb-2 text-sm font-medium dark:text-white text-white"></label>
+                    <div class="">
                         <input id="search" name="search" type="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Here..." required>
                     </div>
                 </form>
+                @auth
+                <div class="p-3 bg-green-500 text-white py-2 rounded-md">
+                    <a href="javascript:void(0)" onclick = "addCategory()"><span class="fas fa-plus"></span></a>
+                </div>
+                @endauth
             </div>
-            
-            @auth
-            <div class="mb-2 mt-2">
-                <a href="javascript:void(0)" onclick = "addCategory()">Add Category</a>
-            </div>
-            @endauth
-
             @if(!$categories->isEmpty())
             @foreach($categories as $category)
             <div class="bg-gray-100 py-5 px-4 mb-4" id="container-{{ $category->id }}" style="transition: all 2s ease-out;">
                 <div class="flex justify-between items-center mb-1">
                     <p class="">{{ $category->name }}</p>
                     <div class="">
-                        <a style="cursor:not-allowed" href="javascript:void(0)" class="bg-green-900 text-white p-1 rounded-md px-3 py-2">Added {{ $category->created_at }}</a>
+                        <a style="cursor:not-allowed" href="javascript:void(0)" class="bg-green-900 text-white p-1 rounded-md px-3 py-2 text-sm">Added {{ $category->created_at }}</a>
                     </div>
+                    <span class="fas fa-trash text-red-600 cursor-pointer" onclick = "deleteCategory('{{ $category->id }}', 'container-{{ $category->id }}')"></span>
                 </div>
             </div>
             @endforeach
@@ -86,60 +84,133 @@
 
 @section('javascript')
 <script>
-    const addCategory = () => { 
-        document.querySelector(".modal-backdrop").style.display='block';
-
-        const cancel_add_category = () => {
-            document.querySelector(".modal-backdrop").style.display='none';
-        }
-        
-        const proceed_add_category = () => {
-            //proceed to add category here.
-            categoryInput = document.querySelector("#category-input").value;
-            if(categoryInput != false){
-                const addCategory = fetch("{{ url('/categories/add') }}", {
-                    method: 'POST',
-                    headers: {
-                        "Content-type": "application/json; charset=UTF-8",
-                    },
-                    body: JSON.stringify({
-                        'category': categoryInput,
-                        'description': document.querySelector("#description-input").value,
-                        '_token': "{{ csrf_token() }}",
-                    }),
-                }).then(response => {
-                    return response.json();
-                }).then(json => {
-                    switch(json.status){
-                        case 'success':
-                            iziToast.show({
-                                title: 'Success',
-                                message: json.message,
-                            });
-                            break;
-                        case 'error':
-                            iziToast.show({
-                                title: 'Error',
-                                message: json.message,
-                                backgroundColor: 'red',
-                                titleColor: 'white',
-                                messageColor: 'white',
-                            });
-                            break;
-                    }
-                })
-            }else{
+const check_user_level = () => {
+    check_user = fetch("{{ url('/checkUserLevel') }}")
+    .then(response => {
+        return response.json();
+    }).then( json => {
+        switch(json.status){
+            case 'error':
                 iziToast.show({
                     title: 'Error',
-                    message: 'Category Field Must Not Be Empty',
+                    message: json.message,
                     backgroundColor: 'red',
                     titleColor: 'white',
                     messageColor: 'white',
-                })
+                });
+                return false;
+                break;
+                //end function lifespan.
+            case 'success':
+                if(json.level < 2){
+                    iziToast.show({
+                        title: 'Error',
+                        message: "You do not have the permission to perform this action.",
+                        backgroundColor: 'red',
+                        titleColor: 'white',
+                        messageColor: 'white',
+                    });
+                    return false;
+                    break;
+                }else{
+                    return true;
+                    break;
+                }
+        }
+    })
+}
+
+const deleteCategory = (recordId, elemId) => {
+    const check_user = check_user_level();
+    console.log(check_user);
+    if(check_user === true){
+        const delete_category = fetch("{{ url('/category/delete') }}", {
+            method: "POST",
+            body: JSON.stringify({
+                'id': recordId,
+                '_token': "{{ csrf_token() }}",
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
             }
-
-            
-
+        }).then(response => { return response.json() })
+        .then(json => {
+            switch(json.status){
+                case 'success':
+                    iziToast.show({
+                        title: 'Success',
+                        message: json.message,
+                    });
+                    break;
+                case 'error':
+                    iziToast.show({
+                        title: 'Error',
+                        message: json.message,
+                        backgroundColor: 'red',
+                        titleColor: 'white',
+                        messageColor: 'white',
+                    });
+                    break;
+            }
+        })
+    }else{
+        return false;
+    }
+}
+    
+        const addCategory = () => { 
+        document.querySelector(".modal-backdrop").style.display='block';
+        const cancel_add_category = () => {
+            document.querySelector(".modal-backdrop").style.display='none';
+        }
+        const proceed_add_category = () => {
+            //proceed to add category here.
+            categoryInput = document.querySelector("#category-input").value;            
+            //check if user is a super admin
+            const check_user = check_user_level();
+            if(check_user){
+                if(categoryInput != false){
+                    const addCategory = fetch("{{ url('/categories/add') }}", {
+                        method: 'POST',
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8",
+                        },
+                        body: JSON.stringify({
+                            'category': categoryInput,
+                            'description': document.querySelector("#description-input").value,
+                            '_token': "{{ csrf_token() }}",
+                        }),
+                    }).then(response => {
+                        return response.json();
+                    }).then(json => {
+                        switch(json.status){
+                            case 'success':
+                                iziToast.show({
+                                    title: 'Success',
+                                    message: json.message,
+                                });
+                                break;
+                            case 'error':
+                                iziToast.show({
+                                    title: 'Error',
+                                    message: json.message,
+                                    backgroundColor: 'red',
+                                    titleColor: 'white',
+                                    messageColor: 'white',
+                                });
+                                break;
+                        }
+                    })
+                }else{
+                    iziToast.show({
+                        title: 'Error',
+                        message: 'Category Field Must Not Be Empty',
+                        backgroundColor: 'red',
+                        titleColor: 'white',
+                        messageColor: 'white',
+                    })
+                }
+            }
         }
 
         //dom elements
@@ -180,18 +251,7 @@
             })
 
         }
-        
-        //proceedDelete.addEventListener('click', delete_record);
     }
-</script>
-<script>
-    /*
-    if(window.location.search){
-        console.log('search path present');
-    }else{
-        console.log('Normal Path detected');
-    }
-    */
 </script>
 
 @stop

@@ -30,6 +30,7 @@ Route::get('/signup', [SignupController::class, 'index']);
 
 //authentication
 Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::get('/checkUserLevel', [LoginController::class, 'check_user_level']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -40,7 +41,7 @@ Route::post('/mg/add', [ManagementController::class, 'insert'])->middleware('aut
 Route::post('/mg/remove', [ManagementController::class, 'remove'])->middleware('auth');
 Route::get('/mg/update/{id}', [ManagementController::class, 'update'])->name('get_update')->middleware('auth');
 Route::post('/mg/update', [ManagementController::class, 'update'])->middleware('auth');
-Route::post('/categories/add', [CategoryController::class, 'add'])->middleware('auth');
 
 //super registered users
-Route::get('mg/category/add', [ManagementController::class, 'add_category'])->middleware('auth');
+Route::post('/categories/add', [CategoryController::class, 'add'])->middleware('auth');
+Route::get('/category/delete', [CategoryController::class, 'delete'])->middleware('auth');
