@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="modal-backdrop">
-    <div class="modal">
+    <div class="modal md:w-[40%] sm:w-full">
         <div class="gradient-1 py-12 px-8">
                 <h4 class="mb-6 text-2xl text-white">Confirmation</h4>
                     <div class="mb-6">
@@ -20,10 +20,10 @@
     </div>
 </div>
 
-<div class="mt-[5vh] md:mt-[5%]">
+<div class="mt-[7%]">
     <div class="md:flex md:justify-between md:items-center w-full" style="gap:20px;align-items:flex-start;">
-        <div class="px-6 md:w-1/3">
-            <div class="gradient-1 w-96 py-12 px-8">
+        <div class="md:w-1/3">
+            <div class="gradient-1 sm:w-[100%] md:w-96 py-12 px-8" style="margin:0 auto;">
                 <h4 class="mb-6 text-2xl text-white">Filters</h4>
                     <div class="mb-6">
                         @csrf
@@ -70,10 +70,10 @@
                 max-width: 250px;
             }
         </style> 
-        <div class="md:w-2/3">
-            <div class="search">
+        <div class="md:w-2/3 md:pr-20 px-3">
+            <div class="search mt-5">
                 <form>
-                    <div class="mb-6 w-[90%]">
+                    <div class="mb-6 w-[100%] px-4">
                         <label for="email" class="block mb-2 text-sm font-medium dark:text-white text-white"></label>
                         <input id="search" name="search" type="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Here..." required>
                     </div>
@@ -81,11 +81,11 @@
             </div>
             @if(!$quotes->isEmpty())
             @foreach($quotes as $quote)
-            <div class="bg-gray-100 py-5 px-4 mb-4 w-[90%]" id="container-{{ $quote->id }}" style="transition: all 2s ease-out;">
-                <div class="flex justify-between items-center mb-3">
+            <div class="bg-gray-100 py-5 px-4 mb-4 w-[100%]" id="container-{{ $quote->id }}" style="transition: all 2s ease-out;">
+                <div class="md:flex justify-between items-center mb-3">
                     <p class="mb-3">{{ $quote->quote_text }}</p>
                     <div class="btn-dropdown">
-                        <a href="javascript:void(0)" onclick = "toggle_dropdown('dropdown-{{ $quote->id }}')" class="bg-green-500 text-white p-1 rounded-md px-3 py-2">Actions &nbsp;<span class="fas fa-chevron-down"></span></a>
+                        <a href="javascript:void(0)" onclick = "toggle_dropdown('dropdown-{{ $quote->id }}')" class="bg-green-500 text-white text-sm p-1 rounded-md px-3 py-2">Actions &nbsp;<span class="fas fa-chevron-down"></span></a>
                         <div class="dropdown-items mt-2" id="dropdown-{{ $quote->id }}">
                             <a href="{{ route('get_update', ['id' => $quote->id] ) }}" class="hover:bg-green-700 p-1 px-3 hover:text-white">Edit</a>
                             <a href="javascript:void(0)" class="hover:bg-green-700 p-1 px-3 hover:text-white" onclick = "confirmDelete('{{ $quote->id }}', 'container-{{ $quote->id }}')">Delete</a>

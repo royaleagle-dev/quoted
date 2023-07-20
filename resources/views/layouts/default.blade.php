@@ -15,6 +15,9 @@
     <!-- App Navigation -->
     <div class="flex items-center justify-around text-white px-3 py-2 fixed top-0 left-0 gradient-1 w-full">
         <h3><a href="">Quoted</a></h3>
+        <div class="md:hidden">
+            <span class="fas fa-bars"></span>
+        </div>
         <div class="hidden md:flex md:items-center">
             <a href="{{ url('/') }}" class="px-3 py-2 hover:bg-green-700 rounded-md">Home</a>
             <a href="{{ url('/quotes') }}" class="px-3 py-2 hover:bg-green-700 rounded-md">Quotes</a>
@@ -35,13 +38,6 @@
                 </div>
                 @endif
             </div>
-        </div>
-        <div class="hidden">
-            <svg viewBox="0 0 100 80" width="20" height="20">
-                <rect width="100" height="20" style="fill:white;"></rect>
-                <rect y="30" width="100" height="20" style="fill:white;"></rect>
-                <rect y="60" width="100" height="20" style="fill:white;"></rect>
-            </svg>
         </div>
     </div>
     <!-- End of App Navigation -->

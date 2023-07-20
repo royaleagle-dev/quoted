@@ -17,6 +17,12 @@
 
 .modal{
     margin: 0 auto;
-    width: 40%;
     margin-top: 5%;
+}
+
+@media screen and (max-width: 640px){
+    .modal{
+        width: 100%;
+        padding-top: 5%;
+    }
 }

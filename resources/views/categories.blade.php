@@ -23,7 +23,7 @@
         </style>
 
 <div class="modal-backdrop">
-    <div class="modal">
+    <div class="modal md:w-[40%] sm:w-full">
         <div class="gradient-1 py-12 px-8">
                 <h4 class="mb-6 text-2xl text-white">Add Category</h4>
                     <div class="mb-6">
@@ -46,10 +46,10 @@
     </div>
 </div>
 
-<div class="mt-[5vh] md:mt-[5%]">
+<div class="pt-[6%] px-4">
     <div class="md:flex md:justify-center md:items-center w-full" style="gap:20px;align-items:flex-start;">  
         <div class="w-full md:w-[40vw]">
-            <div class=" mt-3 mb-3 search flex justify-between items-center">
+            <div class=" mt-3 mb-5 search flex justify-between items-center">
                 <form>
                     <div class="">
                         <input id="search" name="search" type="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Here..." required>
@@ -66,9 +66,6 @@
             <div class="bg-gray-100 py-5 px-4 mb-4" id="container-{{ $category->id }}" style="transition: all 2s ease-out;">
                 <div class="flex justify-between items-center mb-1">
                     <p class=""><a href="{{ route('category.show', [$category->id]) }}">{{ $category->name }}</a></p>
-                    <div class="">
-                        <a style="cursor:not-allowed" href="javascript:void(0)" class="bg-green-900 text-white p-1 rounded-md px-3 py-2 text-sm">Added {{ $category->created_at }}</a>
-                    </div>
                     <span class="fas fa-trash text-red-600 cursor-pointer" onclick = "deleteCategory('{{ $category->id }}', 'container-{{ $category->id }}')"></span>
                 </div>
             </div>
