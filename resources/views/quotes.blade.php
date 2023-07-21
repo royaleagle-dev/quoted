@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class="modal-backdrop">
+<div class="modal-backdrop px-5">
     <div class="modal md:w-[40%] sm:w-full">
         <div class="gradient-1 py-12 px-8">
                 <h4 class="mb-6 text-2xl text-white">Confirmation</h4>
@@ -52,24 +52,7 @@
                     </div>
                     <button type="submit" class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="width:100%;" id="filterBtn">Apply Filter</button>
             </div>
-        </div>       
-        <style>
-            .dropdown-items a{
-                display:block;
-            }
-
-            .dropdown-items{
-                position:absolute;
-                background:white;
-                max-width:  250px;
-
-                
-            }
-            .btn-dropdown{
-                z-index:1;
-                max-width: 250px;
-            }
-        </style> 
+        </div>
         <div class="md:w-2/3 md:pr-20 px-3">
             <div class="search mt-5">
                 <form>
@@ -160,15 +143,6 @@
         window.location = location;
     }
     filterBtn.addEventListener('click', filter);
-</script>
-<script>
-    /*
-    if(window.location.search){
-        console.log('search path present');
-    }else{
-        console.log('Normal Path detected');
-    }
-    */
 </script>
 
 @stop

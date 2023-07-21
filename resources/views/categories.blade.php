@@ -22,7 +22,7 @@
             }
         </style>
 
-<div class="modal-backdrop">
+<div class="modal-backdrop px-5">
     <div class="modal md:w-[40%] sm:w-full">
         <div class="gradient-1 py-12 px-8">
                 <h4 class="mb-6 text-2xl text-white">Add Category</h4>

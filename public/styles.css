@@ -26,3 +26,40 @@
         padding-top: 5%;
     }
 }
+
+#mobile-menu-section{
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8)
+}
+
+.dropdown-items a{
+    display:block;
+}
+
+.dropdown-items{
+    position:fixed;
+    background:white;
+    min-width:7%;
+
+    
+}
+.btn-dropdown{
+    z-index:1;
+    max-width: 250px;
+}
+
+@media screen and (max-width: 766px){
+    #dropdown-nav-mobile{
+        width: 100%;
+        position: absolute;
+        left: 0;
+    }
+    .dropdown-items{
+        width: 22%;
+        position:absolute;
+    }
+}
